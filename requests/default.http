@@ -1,0 +1,9 @@
+# Home api
+GET http://0.0.0.0:8000/v1/api HTTP/1.1
+Content-Type: application/json
+
+###
+
+# Get the health info 
+GET http://0.0.0.0:8000/v1/api/health HTTP/1.1
+Content-Type: application/json
