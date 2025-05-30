@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT_NAME=${1:-dummy_app}
+PROJECT_NAME=${1:-whatsapp_agent}
 BASE_IMAGE=${2:-python:3.11-slim}
 REPOSITORY_NAME=${3:-docker.io/anieshaz}
 
