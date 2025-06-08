@@ -7,3 +7,6 @@ pytz
 pytest
 httpx
 psycopg2-binary
+python-telegram-bot
+apscheduler
+twilio

@@ -1,8 +1,18 @@
-from sqlmodel import create_engine, Session
-from app.src.config import get_db_uri
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+import os
+from dotenv import load_dotenv
 
-engine = create_engine(get_db_uri())
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+engine = create_engine(DATABASE_URL, echo=True)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+def init_db():
+    Base.metadata.create_all(bind=engine)
 
 def get_session():
-    with Session(engine) as session:
-        yield session
+    return SessionLocal()
