@@ -7,3 +7,4 @@ pytz
 pytest
 httpx
 psycopg2-binary
+Jinja2
