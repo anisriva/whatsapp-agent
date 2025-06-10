@@ -18,6 +18,6 @@ def test_not_found_handler():
 
 def test_method_not_allowed_handler():
     # Attempt to POST to an endpoint that only supports GET
-    response = client.post("/v1/api/health")
+    response = client.post("/api/v1/health")
     assert response.status_code == 405
     assert response.json().get("detail") == "Method Not Allowed"
