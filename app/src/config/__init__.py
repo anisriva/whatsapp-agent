@@ -1,10 +1,10 @@
 import os
-from dotenv import dotenv_values
+from dotenv import load_dotenv
 
-env_vars = dotenv_values(".env")
+load_dotenv(".env")
 
 def get_env_vars(key, fallback=None):
-    return env_vars.get(key, fallback)
+    return os.getenv(key, fallback)
 
 def get_log_config():
     return {
@@ -20,8 +20,8 @@ def get_root_path():
 
 def get_app_config():
     return {
-        "openapi_url": "/v1/api/openapi.json",
-        "docs_url": "/v1/api/docs",
+        "openapi_url": "/api/openapi.json",
+        "docs_url": "/api/docs",
         "root_path": get_root_path(),
     }
 
