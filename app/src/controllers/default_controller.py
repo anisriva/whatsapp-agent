@@ -4,7 +4,7 @@ from app.src.models.api import ApiResponse
 
 '''
 $ desc   : Home api
-$ route  : GET /v1/api/
+$ route  : GET /api/v1/
 $ access : PUBLIC
 '''
 def home(request : Request):
@@ -15,7 +15,7 @@ def home(request : Request):
 
 '''
 $ desc   : Home api
-$ route  : GET /v1/api/health
+$ route  : GET /api/v1/health
 $ access : PUBLIC
 '''    
 def health_check(request : Request):
