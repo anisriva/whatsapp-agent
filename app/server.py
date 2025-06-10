@@ -1,7 +1,7 @@
 import uvicorn
 
 from app.src.helpers.log import Logger
-from app.src.config import get_server_config
+from app.src.config.server import get_server_config
 
 logger = Logger()
 
