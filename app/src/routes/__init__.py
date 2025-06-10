@@ -9,4 +9,4 @@ if prefix and prefix != "/":
 else:
     api_router = APIRouter()
 
-api_router.include_router(default_router, prefix="/v1/api")
+api_router.include_router(default_router, prefix="/api/v1")
