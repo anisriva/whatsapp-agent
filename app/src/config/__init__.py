@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv(".env")
+load_dotenv(".env", override=True)
 
 def get_env_vars(key, fallback=None):
     return os.getenv(key, fallback)
