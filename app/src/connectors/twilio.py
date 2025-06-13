@@ -1,6 +1,6 @@
 import certifi
-from app.src.config.twilio import get_twilio_config
 from twilio.rest import Client
+from app.src.config.twilio import get_twilio_config
 from twilio.http.http_client import TwilioHttpClient
 
 def get_twilio_client(verify=False):
