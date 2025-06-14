@@ -4,7 +4,7 @@ from app.src.helpers.twilio.whatsapp.send import send_text, send_healthcheckin
 
 """
 $ desc   : send message api
-$ route  : POST /api/v1/send_message
+$ route  : POST /api/v1/twilio/send_message
 $ access : PRIVATE
 """
 
@@ -16,7 +16,7 @@ async def send_whatsapp_message(message_request: SendTextMessageRequest):
 
 """
 $ desc   : send message api
-$ route  : POST /api/v1/send_poll
+$ route  : POST /api/v1/twilio/send_poll
 $ access : PRIVATE
 """
 
@@ -25,3 +25,14 @@ async def send_whatsapp_poll(message_request: SendPollMessageRequest):
         recipient_number=message_request.recipient_number,
     )
     return ApiResponse(status="success", data=res)
+
+
+"""
+$ desc   : recieve messages
+$ route  : POST /api/v1/twilio/recieve_message
+$ access : PRIVATE
+"""
+
+async def recieve_whatsapp_message(message_request: SendPollMessageRequest):
+    
+    return ApiResponse(status="success")
