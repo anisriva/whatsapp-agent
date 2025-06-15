@@ -1,4 +1,5 @@
 *.sql
+*.db
 etc/
 .helpers/
 .idea/
