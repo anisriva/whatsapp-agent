@@ -12,6 +12,7 @@ async def save_message(message_data: MessageData) -> Tuple[bool, Union[None, str
         logging.debug(f"Got message : {message_data}")
         session.add(message_data)
         session.commit()
+        session.refresh(message_data)
         status = True
     except Exception as e:
         session.rollback()
