@@ -1,10 +1,12 @@
 import logging
 from app.src.models.messages import MessageData
 from app.src.connectors.db import get_session
+from typing import Tuple, Union
 
-async def save_message(message_data: MessageData) -> bool:
+
+async def save_message(message_data: MessageData) -> Tuple[bool, Union[None, str]]:
     status = False
-    message = ""
+    error = None
     try:
         session = get_session()
         logging.debug(f"Got message : {message_data}")
@@ -13,8 +15,9 @@ async def save_message(message_data: MessageData) -> bool:
         status = True
     except Exception as e:
         session.rollback()
-        message = f"Error saving message: {e}"
-        logging.error(message)
+        logging.error(e)
+        status = False
+        error = str(e)
     finally:
         session.close()
-        return (status, message)
+        return status, error

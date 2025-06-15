@@ -22,10 +22,7 @@ Content-Type: application/json
 ###
 
 # receive poll
-
 POST http://0.0.0.0:8000/api/v1/twilio/receive_message HTTP/1.1
-Content-Type: application/json
+Content-Type: application/x-www-form-urlencoded
 
-{
-    "recipient_number" : "+918340132212"
-}
+MessageSid=SM1234567890abcdef1234567890abcdef&AccountSid=AC2e14fee262337bc705faa8985e993915&MessagingServiceSid=MG1234567890abcdef1234567890abcdef&From=whatsapp%3A%2B918340132212&To=whatsapp%3A%2B14155238886&Body=Hello%2C%20I%20received%20your%20appointment%20reminder&NumMedia=0&NumSegments=1&SmsMessageSid=SM1234567890abcdef1234567890abcdef&SmsSid=SM1234567890abcdef1234567890abcdef&SmsStatus=received&ApiVersion=2010-04-01
