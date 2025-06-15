@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # app:
@@ -33,5 +33,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
     volumes:
       - ./.helpers/volume/db_data:/var/lib/postgresql/data
