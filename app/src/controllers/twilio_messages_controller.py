@@ -45,9 +45,9 @@ async def receive_whatsapp_message(request: Request):
         message_data = create_message_data(form_data)
         
         # Save message to db
-        await save_message(message_data)
+        status, message = await save_message(message_data)
         
-        return ApiResponse(status="success", data={"message": "Message received and stored"})
+        return ApiResponse(status="success" if status else "error", data=message)
         
     except Exception as e:
         return ApiResponse(status="error", message=f"Failed to process message: {str(e)}")
