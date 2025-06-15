@@ -13,6 +13,7 @@ async def save_message(message_data: MessageData) -> bool:
         status = True
     except Exception as e:
         session.rollback()
+        status=False
         message = f"Error saving message: {e}"
         logging.error(message)
     finally:
