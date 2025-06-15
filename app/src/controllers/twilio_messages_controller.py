@@ -49,16 +49,9 @@ async def receive_whatsapp_message(request: Request):
     
     # Save message to db
     status, error = await save_message(message_data)
-    if not status:
-        return ApiResponse[MessageData](
-            status_code=HTTPStatusCode.INTERNAL_SERVER_ERROR,
-            status=RequestStatus.ERROR,
-            error=error,
-            data=message_data
-        )
-    else:
-        return ApiResponse[MessageData](
-            status_code=HTTPStatusCode.CREATED,
-            message="Message received successfully",
-            data=message_data,
-        )
+    return ApiResponse[MessageData](
+        status_code=HTTPStatusCode.INTERNAL_SERVER_ERROR if not status else HTTPStatusCode.CREATED,
+        status=RequestStatus.ERROR if not status else RequestStatus.SUCCESS,
+        error = error,
+        data = message_data
+    )
