@@ -1,14 +1,14 @@
 from fastapi import FastAPI, Depends
 from pydantic import ValidationError
-from app.src.routes import api_router
+from app.src.routes import api_router, view_router
 from app.src.middlewares.error_handler import (
     not_found,
     error_handler,
     validation_error_handler,
 )
 
-from app.src.config import get_app_config
-from app.src.connectors.db import get_session
+from app.src.config.app import get_app_config
+from app.src.connectors.db import get_session, create_db_and_tables
 
 fast_api_config = get_app_config()
 
@@ -19,8 +19,16 @@ app = FastAPI(
     redoc_url=None,
 )
 
+# Startup events
+# Create database tables
+@app.on_event("startup")
+async def on_startup():
+    create_db_and_tables()
+
 # Register routes from router aggregator
 app.include_router(api_router, dependencies=[Depends(get_session)])
+app.include_router(view_router, dependencies=[Depends(get_session)])
+
 # Middlewares
 app.middleware("http")(not_found)
 

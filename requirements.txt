@@ -7,3 +7,7 @@ pytz
 pytest
 httpx
 psycopg2-binary
+Jinja2
+twilio
+certifi
+python-multipart

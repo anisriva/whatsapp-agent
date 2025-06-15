@@ -1,9 +1,9 @@
 from typing import Generic, TypeVar, Optional
-from pydantic import BaseModel
+from sqlmodel import SQLModel
 
 T = TypeVar('T')
 
-class ApiResponse(BaseModel, Generic[T]):
+class ApiResponse(SQLModel, Generic[T]):
     status: str
     message: Optional[str] = None
     error: Optional[str] = None
