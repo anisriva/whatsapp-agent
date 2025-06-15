@@ -8,7 +8,7 @@ def get_env_vars(key, fallback=None):
 
 def get_log_config():
     return {
-        "level": "ERROR" if get_env_vars("ENV") == "production" else "INFO",
+        "level": "ERROR" if get_env_vars("ENV") == "production" else "DEBUG",
         "format": "{%(asctime)s | %(levelname)s | %(message)s}",
     }
 
