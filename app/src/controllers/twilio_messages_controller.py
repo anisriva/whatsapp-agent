@@ -1,4 +1,5 @@
 from fastapi import Request
+from app.src.models.messages import MessageData
 from app.src.models.api import ApiResponse, HTTPStatusCode, RequestStatus
 from app.src.models.messages import SendTextMessageRequest, SendPollMessageRequest
 from app.src.helpers.twilio.whatsapp.send import send_text, send_healthcheckin
@@ -28,7 +29,7 @@ async def send_whatsapp_poll(message_request: SendPollMessageRequest):
     res = await send_healthcheckin(
         recipient_number=message_request.recipient_number,
     )
-    return ApiResponse(data=res)
+    return ApiResponse[str](data=res)
 
 
 """
@@ -45,18 +46,19 @@ async def receive_whatsapp_message(request: Request):
 
     # Extract message details from Twilio webhook payload
     message_data = create_message_data(form_data)
-
+    
     # Save message to db
-    status, message = await save_message(message_data)
+    status, error = await save_message(message_data)
     if not status:
-        return ApiResponse(
+        return ApiResponse[MessageData](
             status_code=HTTPStatusCode.INTERNAL_SERVER_ERROR,
             status=RequestStatus.ERROR,
-            error=message,
+            error=error,
+            data=message_data
         )
     else:
-        return ApiResponse(
+        return ApiResponse[MessageData](
             status_code=HTTPStatusCode.CREATED,
             message="Message received successfully",
-            data=message,
+            data=message_data,
         )
