@@ -1,7 +1,7 @@
+from enum import Enum
+from pydantic import BaseModel
 from typing import Generic, TypeVar, Optional, Any
 from fastapi import Response, status
-from enum import Enum
-import json
 
 T = TypeVar("T")
 
@@ -19,18 +19,27 @@ class RequestStatus(Enum):
     SUCCESS = "success"
     ERROR = "error"
 
-class ApiResponse(Generic[T], Response):  # Removed SQLModel inheritance
-    '''
-    Wrapper for all responses.
-    
-        status : "success" | "error" (default = "success")
-        status_code : HTTPStatusCode (default = "OK")
-    '''
-    status: Optional[RequestStatus] = RequestStatus.SUCCESS
+class ApiResponseModel(BaseModel, Generic[T]):
+    """
+    Pydantic model for API response structure.
+    Handles serialization automatically including enums and complex types.
+    """
+    status: RequestStatus = RequestStatus.SUCCESS
     message: Optional[str] = None
     error: Optional[str] = None
     data: Optional[T] = None
 
+    class Config:
+        # Automatically serialize enums by their value
+        use_enum_values = True
+        # Allow arbitrary types (useful for complex generics)
+        arbitrary_types_allowed = True
+
+class ApiResponse(Response, Generic[T]):
+    """
+    FastAPI Response wrapper with automatic serialization.
+    Uses Pydantic for seamless handling of complex types and enums.
+    """
     def __init__(
         self,
         status: RequestStatus = RequestStatus.SUCCESS,
@@ -40,17 +49,18 @@ class ApiResponse(Generic[T], Response):  # Removed SQLModel inheritance
         status_code: HTTPStatusCode = HTTPStatusCode.OK,
         **kwargs: Any
     ):
-        self.status = status
-        self.message = message
-        self.error = error
-        self.data = data
-        content = json.dumps(self.to_dict(), ensure_ascii=False)
-        super().__init__(content=content, status_code=status_code.value, **kwargs)
-
-    def to_dict(self) -> dict:
-        return {
-            "status": self.status.value,
-            "message": self.message,
-            "error": self.error,
-            "data": self.data
-        }
+        # Create the response model
+        response_model = ApiResponseModel[T](
+            status=status,
+            message=message,
+            error=error,
+            data=data
+        )
+        # Use Pydantic's built-in serialization
+        content = response_model.model_dump_json(exclude_none=False)
+        super().__init__(
+            content=content,
+            status_code=status_code.value,
+            media_type="application/json",
+            **kwargs
+        )
