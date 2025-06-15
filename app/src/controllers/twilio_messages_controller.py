@@ -1,6 +1,9 @@
+from fastapi import Request
 from app.src.models.api import ApiResponse
 from app.src.models.messages import SendTextMessageRequest, SendPollMessageRequest
 from app.src.helpers.twilio.whatsapp.send import send_text, send_healthcheckin
+from app.src.helpers.twilio.whatsapp.receive import create_message_data
+from app.src.dao.message_data import save_message
 
 """
 $ desc   : send message api
@@ -33,6 +36,18 @@ $ route  : POST /api/v1/twilio/recieve_message
 $ access : PRIVATE
 """
 
-async def recieve_whatsapp_message(message_request: SendPollMessageRequest):
-    
-    return ApiResponse(status="success")
+async def receive_whatsapp_message(request: Request):
+    try:
+        # Get form data from Twilio webhook
+        form_data = await request.form()
+        
+        # Extract message details from Twilio webhook payload
+        message_data = create_message_data(form_data)
+        
+        # Save message to db
+        await save_message(message_data)
+        
+        return ApiResponse(status="success", data={"message": "Message received and stored"})
+        
+    except Exception as e:
+        return ApiResponse(status="error", message=f"Failed to process message: {str(e)}")
