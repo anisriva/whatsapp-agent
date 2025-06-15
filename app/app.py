@@ -8,7 +8,7 @@ from app.src.middlewares.error_handler import (
 )
 
 from app.src.config.app import get_app_config
-from app.src.connectors.db import get_session
+from app.src.connectors.db import get_session, create_db_and_tables
 
 fast_api_config = get_app_config()
 
@@ -18,6 +18,12 @@ app = FastAPI(
     docs_url=fast_api_config["docs_url"],
     redoc_url=None,
 )
+
+# Startup events
+# Create database tables
+@app.on_event("startup")
+async def on_startup():
+    create_db_and_tables()
 
 # Register routes from router aggregator
 app.include_router(api_router, dependencies=[Depends(get_session)])
